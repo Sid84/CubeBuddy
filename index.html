@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cube Buddy — Learn to Solve a 2×2 Speed Cube — V49</title>
+<title>Cube Buddy — Learn to Solve a 2×2 Speed Cube — V51</title>
 <meta name="description" content="Cube Buddy teaches kids and beginners how to solve a 2×2 cube step by step — an interactive practice mode, a full pattern reference, a printable book, and a physical-cube scanner. Free to use.">
 <meta name="keywords" content="2x2 cube, how to solve a 2x2 cube, cube for kids, learn to solve a cube, speed cube tutorial">
 <meta property="og:title" content="Cube Buddy — Learn to Solve a 2×2 Speed Cube">
@@ -732,7 +732,16 @@
   .practice-pad .move-btn .code{font-size:.68rem;}
   .move-btn{min-height:58px;font-size:1rem;}
   .try-btn,.ghost-btn{min-height:52px;font-size:1rem;}
-  .scan-net{display:none !important;}
+  /* Keep the manual colour-entry net visible on mobile.
+     The old rule hid every .scan-net, including the manual editor. */
+  #scanManual .scan-net{
+    display:block !important;
+    width:100%;
+    max-width:380px;
+    height:300px;
+    overflow:visible;
+    transform-origin:top center;
+  }
   .scan-mobile-actions{display:grid !important;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px;}
   .scan-mobile-actions button{min-height:58px;border-radius:14px;font-weight:800;border:0;}
   .scan-face-title{font-size:1.55rem;font-weight:900;text-align:center;margin:4px 0 8px;}
@@ -741,6 +750,35 @@
   .scan-confirm-swatch{min-height:95px;}
 }
 @media (min-width:701px){.scan-mobile-actions{display:none;}}
+
+
+  /* ---------- V50 manual colour entry ---------- */
+  .scan-net-cell{ cursor:pointer; touch-action:manipulation; }
+  .scan-net-cell:empty::after{
+    content:'+';
+    display:flex; align-items:center; justify-content:center;
+    width:100%; height:100%;
+    color:var(--ink-soft); font-weight:900; font-size:1rem;
+  }
+  .scan-color-picker{ box-shadow:0 10px 28px rgba(28,37,65,.22); }
+
+
+  @media (max-width:430px){
+    #scanManual .scan-net{
+      width:380px;
+      max-width:none;
+      left:50%;
+      margin-left:-190px;
+      transform:scale(.82);
+      margin-bottom:-48px;
+    }
+  }
+  @media (max-width:360px){
+    #scanManual .scan-net{
+      transform:scale(.72);
+      margin-bottom:-84px;
+    }
+  }
 
 </style>
 </head>
@@ -1097,8 +1135,8 @@
 
       <div id="scanManual" style="display:none;">
         <div class="section-head" style="margin-bottom:14px;">
-          <h3 style="font-size:1.05rem; margin:0 0 4px;">Photograph Your Cube — Pick the Face</h3>
-          <p style="font-size:0.85rem;">For each photo, use the 📷 button on the face you are photographing. Keep the cube in the same physical orientation while taking all six photos.</p>
+          <h3 style="font-size:1.05rem; margin:0 0 4px;">Enter your cube colours</h3>
+          <p style="font-size:0.85rem;">Tap each square and choose its colour. Fill all 24 stickers, then build the cube and solve.</p>
         </div>
         <div class="scan-net-help">
           <div><strong>Front / Right / Back / Left:</strong> look at that side normally — up in the picture = up in real life.</div>
@@ -2901,8 +2939,10 @@ const NET_LAYOUT = {
   D: { top:176,left:100, label:'Bottom' },
 };
 
-function scanNetInit(){
-  netFaceData = { F:{},U:{},B:{},D:{},R:{},L:{} };
+function scanNetInit(preserveExisting=false){
+  if(!preserveExisting || !netFaceData){
+    netFaceData = { F:{},U:{},B:{},D:{},R:{},L:{} };
+  }
   const wrap = document.getElementById('scanNet');
   wrap.innerHTML = '';
   for(const faceKey of ['U','L','F','R','B','D']){
@@ -2915,11 +2955,12 @@ function scanNetInit(){
     const grid = document.createElement('div');
     grid.className = 'scan-net-face-grid';
     grid.id = 'scanNetGrid_' + faceKey;
-    scanNetRenderPhotoPrompt(grid, faceKey);
+    scanNetRenderColorGrid(grid, faceKey);
     faceDiv.appendChild(grid);
     wrap.appendChild(faceDiv);
   }
   scanNetUpdateProgress();
+  applyNetLiveScanPreview(netFaceData);
 }
 
 function scanNetRenderPhotoPrompt(grid, faceKey){
@@ -3010,12 +3051,12 @@ function scanNetRenderColorGrid(grid, faceKey){
   });
   const retake = document.createElement('div');
   retake.className = 'scan-net-retake';
-  retake.textContent = '↺';
-  retake.title = 'Retake photo for this face';
+  retake.textContent = '×';
+  retake.title = 'Clear this face';
   retake.addEventListener('click', (e)=>{
     e.stopPropagation();
     netFaceData[faceKey] = {};
-    scanNetRenderPhotoPrompt(grid, faceKey);
+    scanNetRenderColorGrid(grid, faceKey);
     scanNetUpdateProgress();
     applyNetLiveScanPreview(netFaceData);
   });
@@ -3069,7 +3110,7 @@ document.getElementById('scanManualBackBtn').addEventListener('click', ()=>{
 document.getElementById('scanEditColoursBtn')?.addEventListener('click', ()=>{
   document.getElementById('scanResult').style.display='none';
   document.getElementById('scanManual').style.display='';
-  scanNetInit();
+  scanNetInit(true);
 });
 document.getElementById('scanManualSolveBtn').addEventListener('click', ()=>{
   const btn = document.getElementById('scanManualSolveBtn');
