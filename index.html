@@ -209,13 +209,22 @@
 
   /* ---------- Header ---------- */
   header.site{ padding:22px 24px 6px; }
-  .brand{ display:flex; align-items:center; gap:10px; max-width:1080px; margin:0 auto; }
+  .brand{ display:flex; align-items:center; gap:10px; max-width:1080px; margin:0 auto; color:inherit; text-decoration:none; }
   .brand-mark{
-    width:38px; height:38px; border-radius:11px;
-    background: conic-gradient(from 45deg, var(--c-R), var(--c-D), var(--c-F), var(--c-B), var(--c-L), var(--c-R));
-    box-shadow: inset 0 0 0 3px #fff, var(--shadow-soft);
-    flex-shrink:0;
+    width:38px; height:38px; flex:none; display:grid; place-items:center;
+    perspective:110px;
   }
+  .brand-mark .logo-cube{position:relative;width:22px;height:22px;transform-style:preserve-3d;animation:logoCubeSpin 12s linear infinite;}
+  .brand-mark .cube-face{position:absolute;inset:0;border:2px solid #fff;border-radius:3px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12);}
+  .brand-mark .cube-front{background:var(--c-R);transform:translateZ(11px);}
+  .brand-mark .cube-back{background:var(--c-B);transform:rotateY(180deg) translateZ(11px);}
+  .brand-mark .cube-right{background:var(--c-D);transform:rotateY(90deg) translateZ(11px);}
+  .brand-mark .cube-left{background:var(--c-L);transform:rotateY(-90deg) translateZ(11px);}
+  .brand-mark .cube-top{background:#FAFAF7;transform:rotateX(90deg) translateZ(11px);}
+  .brand-mark .cube-bottom{background:var(--c-F);transform:rotateX(-90deg) translateZ(11px);}
+  @keyframes logoCubeSpin{from{transform:rotateX(-24deg) rotateY(0)}to{transform:rotateX(336deg) rotateY(360deg)}}
+  .brand:focus-visible{outline:3px solid var(--violet);outline-offset:5px;border-radius:8px;}
+  @media(prefers-reduced-motion:reduce){.brand-mark .logo-cube{animation:none;transform:rotateX(-24deg) rotateY(-30deg);}}
   .brand-name{ font-family:'Baloo 2',sans-serif; font-weight:700; font-size:1.25rem; letter-spacing:-0.01em; }
   .brand-tag{ font-size:0.8rem; color:var(--ink-soft); font-weight:600; }
 
@@ -785,13 +794,13 @@
 <body>
 
 <header class="site">
-  <div class="brand">
-    <div class="brand-mark"></div>
+  <a class="brand" href="index.html" aria-label="Cube Buddy home">
+    <span class="brand-mark" aria-hidden="true"><span class="logo-cube"><span class="cube-face cube-front"></span><span class="cube-face cube-back"></span><span class="cube-face cube-right"></span><span class="cube-face cube-left"></span><span class="cube-face cube-top"></span><span class="cube-face cube-bottom"></span></span></span>
     <div>
       <div class="brand-name">Cube Buddy</div>
       <div class="brand-tag">learn the 2×2 cube</div>
     </div>
-  </div>
+  </a>
 </header>
 
 <section class="hero">
