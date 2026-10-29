@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cube Buddy — Learn to Solve a 2×2 Speed Cube — V51</title>
-<meta name="description" content="Cube Buddy teaches kids and beginners how to solve a 2×2 cube step by step — an interactive practice mode, a full pattern reference, a printable book, and a physical-cube scanner. Free to use.">
+<title>Cube Mate — Learn to Solve a 2×2 Speed Cube — V51</title>
+<meta name="description" content="Cube Mate teaches kids and beginners how to solve a 2×2 cube step by step — an interactive practice mode, a full pattern reference, a printable book, and a physical-cube scanner. Free to use.">
 <meta name="keywords" content="2x2 cube, how to solve a 2x2 cube, cube for kids, learn to solve a cube, speed cube tutorial">
-<meta property="og:title" content="Cube Buddy — Learn to Solve a 2×2 Speed Cube">
+<meta property="og:title" content="Cube Mate — Learn to Solve a 2×2 Speed Cube">
 <meta property="og:description" content="An interactive, step-by-step way for kids to learn the 2×2 cube — practice mode, pattern reference, and a printable book.">
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -794,10 +794,10 @@
 <body>
 
 <header class="site">
-  <a class="brand" href="index.html" aria-label="Cube Buddy home">
+  <a class="brand" href="index.html" aria-label="Cube Mate home">
     <span class="brand-mark" aria-hidden="true"><span class="logo-cube"><span class="cube-face cube-front"></span><span class="cube-face cube-back"></span><span class="cube-face cube-right"></span><span class="cube-face cube-left"></span><span class="cube-face cube-top"></span><span class="cube-face cube-bottom"></span></span></span>
     <div>
-      <div class="brand-name">Cube Buddy</div>
+      <div class="brand-name">Cube Mate</div>
       <div class="brand-tag">learn the 2×2 cube</div>
     </div>
   </a>
@@ -1264,7 +1264,7 @@
   <div class="footer-links">
     <a href="privacy.html">Privacy Policy</a> · <a href="terms.html">Terms of Use</a>
   </div>
-  <div style="margin-top:8px; font-size:0.65rem; opacity:0.5;">&copy; 2026 Cube Buddy. All rights reserved.</div>
+  <div style="margin-top:8px; font-size:0.65rem; opacity:0.5;">&copy; 2026 Cube Mate. All rights reserved.</div>
 </footer>
 
 <div class="modal-backdrop" id="exportModal">
@@ -1274,7 +1274,7 @@
     <div class="modal-actions">
       <button class="ghost-btn primary" id="exportShareBtn">📤 Save / Share</button>
       <button class="ghost-btn" id="exportCopyBtn">📋 Copy image</button>
-      <a class="ghost-btn" id="exportDownloadLink" download="cube-buddy.png">⬇ Download link</a>
+      <a class="ghost-btn" id="exportDownloadLink" download="cube-mate.png">⬇ Download link</a>
       <button class="ghost-btn" id="exportCloseBtn">Close</button>
     </div>
   </div>
@@ -1459,7 +1459,7 @@ const LAYERS={};
 ['x','y','z'].forEach(ax=>{[1,-1].forEach(sg=>{LAYERS[ax+sg]=layerOrder(ax,sg);});});
 
 
-try { runCubeGeometrySelfTest(); } catch(e) { console.error('Cube Buddy geometry self-test failed:', e); }
+try { runCubeGeometrySelfTest(); } catch(e) { console.error('Cube Mate geometry self-test failed:', e); }
 
 /* ================= RENDER ================= */
 const S = 78, H = S/2, GAP = 4, D = S/2 + GAP/2; // spacing between cubie centers/2
@@ -3252,14 +3252,14 @@ document.getElementById('scanManualSolveBtn').addEventListener('click', ()=>{
           btn.disabled=false;
           updatePracticeUI();
         }catch(err){
-          console.error('Cube Buddy solver error:',err);
+          console.error('Cube Mate solver error:',err);
           btn.textContent=originalText;
           btn.disabled=false;
           status.textContent='⚠️ The cube was built, but the solver encountered an error.';
         }
       },50);
     }catch(err){
-      console.error('Cube Buddy build error:',err);
+      console.error('Cube Mate build error:',err);
       btn.textContent=originalText;
       btn.disabled=false;
       scanShowError('Something went wrong while building the cube. Please try the six photos again.');
@@ -3837,7 +3837,7 @@ function renderSnapshotCanvas(){
   ctx.fillStyle = '#1C2541';
   ctx.font = '700 20px Baloo 2, Nunito, sans-serif';
   ctx.textAlign = 'center';
-  ctx.fillText('Cube Buddy', cubeW/2, 26);
+  ctx.fillText('Cube Mate', cubeW/2, 26);
 
   // direction panel, drawn beside the cube (not overlapping any sticker)
   if(lastMoveFace){
@@ -3895,7 +3895,7 @@ function downloadCanvas(canvas, filename){
       hint.textContent = 'Tap "Save / Share" to save this straight to your phone.';
     }
     shareBtn.onclick = async ()=>{
-      try{ await navigator.share({ files:[file], title:'Cube Buddy' }); }
+      try{ await navigator.share({ files:[file], title:'Cube Mate' }); }
       catch(e){ /* user cancelled or share failed — image is still visible above */ }
     };
 
@@ -3936,7 +3936,7 @@ document.getElementById('exportModal').addEventListener('click', (e)=>{
 document.getElementById('exportBtn').addEventListener('click', ()=>{
   try{
     const canvas = renderSnapshotCanvas();
-    downloadCanvas(canvas, 'cube-buddy.png');
+    downloadCanvas(canvas, 'cube-mate.png');
   } catch(err){
     console.error('Export failed', err);
     alert('Sorry, the export ran into a problem. Please try again.');
